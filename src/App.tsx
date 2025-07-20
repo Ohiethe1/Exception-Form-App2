@@ -6,6 +6,10 @@ import Header from './components/Header';
 import Login from './components/Login';
 import ProtectedRoute from './components/ProtectedRoute';
 import { AuthProvider } from './contexts/AuthContext';
+<<<<<<< HEAD
+=======
+import AuditTrail from './components/AuditTrail';
+>>>>>>> 3857917 (Initial commit: MTA Form Processor with updated logo styling)
 
 function App() {
   return (
@@ -33,6 +37,19 @@ function App() {
               </div>
             </ProtectedRoute>
           } />
+<<<<<<< HEAD
+=======
+          <Route path="/audit-trail" element={
+            <ProtectedRoute>
+              <div className="min-h-screen bg-gray-50">
+                <Header />
+                <main className="container mx-auto px-4 py-8">
+                  <AuditTrail />
+                </main>
+              </div>
+            </ProtectedRoute>
+          } />
+>>>>>>> 3857917 (Initial commit: MTA Form Processor with updated logo styling)
         </Routes>
       </Router>
     </AuthProvider>

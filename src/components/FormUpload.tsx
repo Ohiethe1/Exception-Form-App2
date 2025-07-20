@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useState, useRef } from 'react';
 import type { DragEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -174,10 +175,65 @@ const FormUpload = () => {
                 <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
                 <span className="text-blue-800">Processing form data...</span>
               </div>
+=======
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+const FormUpload = () => {
+  const [file, setFile] = useState<File | null>(null);
+  const [result, setResult] = useState<string | null>(null);
+  const navigate = useNavigate();
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!file) {
+      alert('Please select a file first');
+      return;
+    }
+    
+    // Save basic file info to localStorage
+    const formData = {
+      fileName: file.name,
+      uploadDate: new Date().toISOString(),
+      status: 'pending',
+    };
+    
+    const existingData = JSON.parse(localStorage.getItem('mtaForms') || '[]');
+    existingData.push(formData);
+    localStorage.setItem('mtaForms', JSON.stringify(existingData));
+    
+    setResult('File uploaded successfully! Processing...');
+    setTimeout(() => {
+      navigate('/dashboard');
+    }, 1500);
+  };
+
+  return (
+    <div className="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-lg mt-10">
+      <h2 className="text-3xl font-extrabold text-gray-900 mb-2 text-center">Upload Exception Claim Form</h2>
+      <p className="text-gray-500 text-center mb-8">Upload your form file and our AI will extract all the details automatically.</p>
+      
+      <form onSubmit={handleSubmit} className="space-y-6">
+        {/* File Upload Section */}
+        <div className="flex flex-col items-center justify-center gap-4 border-2 border-dashed border-gray-300 rounded-lg p-8 bg-gray-50 hover:border-blue-400 transition-colors">
+          <div className="text-4xl text-gray-400">📄</div>
+          <label className="font-semibold text-gray-700 text-lg">Upload Form File</label>
+          <p className="text-sm text-gray-500">Supported formats: PDF, JPG, PNG</p>
+          <input 
+            type="file" 
+            onChange={e => setFile(e.target.files?.[0] || null)} 
+            accept=".pdf,.jpg,.jpeg,.png"
+            className="mt-2" 
+          />
+          {file && (
+            <div className="mt-4 p-3 bg-blue-50 rounded-lg">
+              <span className="text-sm text-blue-700">Selected: {file.name}</span>
+>>>>>>> 3857917 (Initial commit: MTA Form Processor with updated logo styling)
             </div>
           )}
         </div>
 
+<<<<<<< HEAD
         {/* Extracted Data Preview */}
         <div className="space-y-6">
           <h3 className="text-xl font-semibold text-gray-800">
@@ -241,6 +297,18 @@ const FormUpload = () => {
           )}
         </div>
       </div>
+=======
+        <button 
+          type="submit" 
+          disabled={!file}
+          className="w-full bg-blue-700 text-white py-3 rounded-lg font-bold text-lg hover:bg-blue-800 transition disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          Upload & Process
+        </button>
+        
+        {result && <p className="mt-4 text-green-600 text-center">{result}</p>}
+      </form>
+>>>>>>> 3857917 (Initial commit: MTA Form Processor with updated logo styling)
     </div>
   );
 };
