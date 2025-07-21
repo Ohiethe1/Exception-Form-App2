@@ -1,5 +1,6 @@
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import mtaLogo from '../assets/mta-logo.png';
 
 const Header = () => {
   const { user, logout } = useAuth();
@@ -9,41 +10,19 @@ const Header = () => {
   };
 
   return (
-    <header className="text-white bg-blue-600 shadow-lg">
-      <div className="container px-4 py-4 mx-auto">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <h1 className="text-2xl font-bold">MTA Form Processor</h1>
-            <span className="text-sm text-blue-200">Exception Claims</span>
-          </div>
-          <div className="flex items-center space-x-6">
-            <nav className="flex space-x-6">
-              <Link 
-                to="/" 
-                className="transition-colors duration-200 hover:text-blue-200"
-              >
-                Upload Form
-              </Link>
-              <Link 
-                to="/dashboard" 
-                className="transition-colors duration-200 hover:text-blue-200"
-              >
-                Dashboard
-              </Link>
-            </nav>
-            
-            <div className="flex items-center space-x-3">
-              <span className="text-blue-200 text-sm">
-                Welcome, {user?.name}
-              </span>
-              <button
-                onClick={handleLogout}
-                className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm transition-colors duration-200"
-              >
-                Logout
-              </button>
-            </div>
-          </div>
+    <header className="bg-[#232328] text-white w-full">
+      <div className="flex items-center justify-between py-3 px-10">
+        <div className="flex items-center space-x-6">
+          <img src={mtaLogo} alt="MTA Logo" className="w-12 h-12 rounded-full bg-white object-contain p-1" />
+        </div>
+        <nav className="flex items-center space-x-12">
+          <NavLink to="/" className={({ isActive }) => `font-bold text-lg transition-colors duration-200 hover:text-yellow-400 ${isActive ? 'underline underline-offset-8 decoration-yellow-400' : ''}`}>Upload Form</NavLink>
+          <NavLink to="/dashboard" className={({ isActive }) => `font-bold text-lg transition-colors duration-200 hover:text-yellow-400 ${isActive ? 'underline underline-offset-8 decoration-yellow-400' : ''}`}>Dashboard</NavLink>
+          <NavLink to="/audit-trail" className={({ isActive }) => `font-bold text-lg transition-colors duration-200 hover:text-yellow-400 ${isActive ? 'underline underline-offset-8 decoration-yellow-400' : ''}`}>Audit Trail</NavLink>
+        </nav>
+        <div className="flex items-center space-x-6">
+          <span className="font-bold text-base">Welcome, MTA Admin</span>
+          <button onClick={handleLogout} className="border border-white text-white px-5 py-2 rounded-lg font-bold hover:bg-white hover:text-[#232328] transition">Logout</button>
         </div>
       </div>
     </header>

@@ -4,11 +4,7 @@ import type { ReactNode } from 'react';
 interface User {
   id: string;
   name: string;
-<<<<<<< HEAD
-  bsciId: string;
-=======
   bscId: string;
->>>>>>> 3857917 (Initial commit: MTA Form Processor with updated logo styling)
   role: string;
 }
 
