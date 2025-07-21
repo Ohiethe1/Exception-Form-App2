@@ -3,9 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import mtaLogo from "../assets/mta-logo.png";
 
-const DEMO_BSC_ID = '12345678';
-const DEMO_PASSWORD = 'password123';
-
 const Login = () => {
   const [bscId, setBscId] = useState('');
   const [password, setPassword] = useState('');
@@ -22,18 +19,21 @@ const Login = () => {
     // Mock authentication - simulate API call
     await new Promise(resolve => setTimeout(resolve, 1000));
 
-    // Mock credentials check
-    if (bscId === DEMO_BSC_ID && password === DEMO_PASSWORD) {
-      const userData = {
-        id: bscId,
-        name: 'MTA Admin',
-        bscId: bscId,
-        role: 'admin'
-      };
-      login('mock-jwt-token-123', userData);
-      navigate('/');
-    } else {
-      setError(`Invalid credentials. Use BSC ID: ${DEMO_BSC_ID} / Password: ${DEMO_PASSWORD}`);
+    try {
+      const response = await fetch('http://localhost:8000/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: bscId, password }),
+      });
+      const data = await response.json();
+      if (response.ok) {
+        login(data.token, data.user);
+        navigate('/');
+      } else {
+        setError(data.error || 'Login failed.');
+      }
+    } catch (err) {
+      setError('Network or server error.');
     }
     setIsLoading(false);
   };
@@ -141,26 +141,7 @@ const Login = () => {
               </div>
             </form>
 
-            <div className="mt-6">
-              <div className="relative">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-gray-300" />
-                </div>
-                <div className="relative flex justify-center text-sm">
-                  <span className="px-2 text-gray-500 bg-white">Demo Credentials</span>
-                </div>
-              </div>
-
-              <div className="p-4 mt-6 rounded-md bg-gray-50">
-                <p className="mb-2 text-sm text-gray-600">
-                  Use these credentials to sign in:
-                </p>
-                <div className="space-y-1 text-sm">
-                  <p><span className="font-medium">BSC ID:</span> {DEMO_BSC_ID}</p>
-                  <p><span className="font-medium">Password:</span> {DEMO_PASSWORD}</p>
-                </div>
-              </div>
-            </div>
+            {/* (Demo credentials UI removed) */}
           </div>
         </div>
       </div>

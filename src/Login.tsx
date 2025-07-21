@@ -1,18 +1,18 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../contexts/AuthContext';
+import { useAuth } from './contexts/AuthContext';
 
 function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
-  const { login } = useContext(AuthContext) as { login: (username: string) => void };
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    fetch('http://localhost:5000/api/login', {
+    fetch('http://localhost:8000/api/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, password }),
@@ -21,7 +21,7 @@ function Login() {
         const data = await res.json();
         if (res.ok) {
           setMessage('✅ ' + data.message);
-          login(username); // call login function from context
+          login(data.token, data.user); // call login function from context
           navigate('/'); // redirect to home page after login
         } else {
           setMessage('❌ ' + data.error);

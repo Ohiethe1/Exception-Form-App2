@@ -17,7 +17,7 @@ const AuditTrail: React.FC = () => {
   useEffect(() => {
     const fetchAuditLogs = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/audit-trail');
+        const response = await fetch('http://localhost:8000/api/audit-trail');
         if (!response.ok) throw new Error('Failed to fetch audit logs');
         const data = await response.json();
         setLogs(data.logs || []);
